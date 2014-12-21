@@ -34,7 +34,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 --beautiful.init("/usr/share/awesome/themes/default/theme.lua")
-beautiful.init("/home/whirm/.config/awesome/themes/japanese2/theme.lua")
+beautiful.init("/home/whirm/.config/awesome/themes/whirm/theme.lua")
 
 local blingbling = require("blingbling")
 vicious = require("vicious")
@@ -233,7 +233,7 @@ tyrannical.settings.mwfact = 0.66
 -- {{{ Wallpaper
 if beautiful.wallpaper then
     for s = 1, screen.count() do
-        gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+       gears.wallpaper.maximized(beautiful.wallpaper[s] or beautiful.wallpaper[1], s, true)
     end
 end
 -- }}}
@@ -328,7 +328,7 @@ for s = 1, screen.count() do
        -- Initialize widget
        cpu_graph = blingbling.line_graph({ height = 18,
                                            width = 120,
-                                           graph_background_color = "#00000033"
+                                           --graph_background_color = "#00000033"
        })
        -- Register widget
        vicious.register(cpu_graph, vicious.widgets.cpu, "$1")
