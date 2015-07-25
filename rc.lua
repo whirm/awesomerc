@@ -297,6 +297,25 @@ mytasklist.buttons = awful.util.table.join(
                                               if client.focus then client.focus:raise() end
                                           end))
 
+-- Keyboard map indicator and changer
+kbdcfg = {}
+kbdcfg.cmd = "setxkbmap"
+kbdcfg.layout = { { "us", "" , "US" }, { "es", "" , "ES" } }
+kbdcfg.current = 1  -- us is our default layout
+kbdcfg.widget = wibox.widget.textbox()
+kbdcfg.widget:set_text(" " .. kbdcfg.layout[kbdcfg.current][3] .. " ")
+kbdcfg.switch = function ()
+  kbdcfg.current = kbdcfg.current % #(kbdcfg.layout) + 1
+  local t = kbdcfg.layout[kbdcfg.current]
+  kbdcfg.widget:set_text(" " .. t[3] .. " ")
+  os.execute( "(" .. kbdcfg.cmd .. " " .. t[1] .. " " .. t[2] .. "; sleep 0.3 ; xmodmap ~/.xmodmap.mackeyboard) &" )
+end
+
+ -- Mouse bindings
+kbdcfg.widget:buttons(
+ awful.util.table.join(awful.button({ }, 1, function () kbdcfg.switch() end))
+)
+
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
@@ -321,6 +340,9 @@ for s = 1, screen.count() do
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mytaglist[s])
     left_layout:add(mypromptbox[s])
+
+    -- Widgets that are aligned to the right
+    local right_layout = wibox.layout.fixed.horizontal()
 
     if s == 1 then
        -- CPUWIDGET
@@ -361,11 +383,12 @@ for s = 1, screen.count() do
 
 
        vicious.register(memwidget, vicious.widgets.mem, '$1', 1)
-    end
 
-    -- Widgets that are aligned to the right
-    local right_layout = wibox.layout.fixed.horizontal()
-    if s == 1 then right_layout:add(wibox.widget.systray()) end
+       right_layout:add(wibox.widget.systray())
+
+       -- Add widget to your layout
+       right_layout:add(kbdcfg.widget)
+    end
 
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
@@ -470,6 +493,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     --awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    awful.key({ modkey, "Shift"   }, "z", kbdcfg.switch),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
