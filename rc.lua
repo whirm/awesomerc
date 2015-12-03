@@ -15,6 +15,9 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 
+require("collision")()
+
+
 -- Handle runtime errors after startup
 do
     local in_error = false
@@ -41,8 +44,10 @@ vicious = require("vicious")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvtcd -e zsh"
-editor = os.getenv("EDITOR") or "editor"
-editor_cmd = terminal .. " -e " .. editor
+--editor = os.getenv("EDITOR") or "editor"
+--editor_cmd = terminal .. " -e " .. editor
+editor = "emacs"
+editor_cmd = editor
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -50,6 +55,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+alt    = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
@@ -226,7 +232,7 @@ tyrannical.properties.centered = {
 tyrannical.properties.size_hints_honor = { xterm = false, URxvt = false, aterm = false, sauer_client = false, mythfrontend  = false}
 --tyrannical.properties.fullscreen = { Emacs = false, Emacs24 = false }
 tyrannical.properties.focusable = { Gkrellm = false } -- Doesn't seem to work for gkrellm
-tyrannical.properties.border_width = { Gkrellm = 0, Emacs = 0, Emacs24 = 0, iceweasel = 0 }
+tyrannical.properties.border_width = { Gkrellm = 0, Emacs = 0, Emacs24 = 0, iceweasel = 0, KRuler = 0 }
 tyrannical.properties.default_layout = awful.layout.suit.tile
 tyrannical.settings.mwfact = 0.66
 
@@ -405,7 +411,7 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
+    --awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -458,10 +464,10 @@ end
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
-   awful.key({ modkey,           }, "Left", prevEmptyTag),
-   awful.key({ modkey,           }, "Right", nextEmptyTag),
-   awful.key({ modkey,           }, "Up", awful.tag.viewprev),
-   awful.key({ modkey,           }, "Down",  awful.tag.viewnext       ),
+   -- awful.key({ alt, "Control"    }, "Left", prevEmptyTag),
+   -- awful.key({ alt, "Control"    }, "Right", nextEmptyTag),
+   -- awful.key({ modkey,           }, "Up", awful.tag.viewprev),
+   -- awful.key({ modkey,           }, "Down",  awful.tag.viewnext       ),
    awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
     awful.key({ modkey,           }, "j",
@@ -491,9 +497,11 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+    awful.key({ modkey, "Shift"   }, "Return", function () awful.util.spawn(editor) end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     --awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     awful.key({ modkey, "Shift"   }, "z", kbdcfg.switch),
+    awful.key({                   }, "XF86Launch9", function () awful.util.spawn("sudo systemctl suspend") end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
@@ -505,7 +513,6 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
-
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
@@ -686,8 +693,8 @@ client.connect_signal("manage", function (c, startup)
                          end
 end)
 
-client.connect_signal("focus", function(c) c.opacity = 1 end)
-client.connect_signal("unfocus", function(c) c.opacity = 0.8 end)
+--client.connect_signal("focus", function(c) c.opacity = 1 end)
+--client.connect_signal("unfocus", function(c) c.opacity = 0.8 end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
