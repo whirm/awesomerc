@@ -7,3 +7,6 @@
 [submodule "blingbling"]
 	path = blingbling
 	url = https://github.com/cedlemo/blingbling.git
+[submodule "collision"]
+	path = collision
+	url = https://github.com/Elv13/collision.git
