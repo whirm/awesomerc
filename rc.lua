@@ -208,7 +208,7 @@ tyrannical.tags = {
 tyrannical.properties.intrusive = {
     "ksnapshot"     , "pinentry"       , "gtksu"     , "kcalc"        , "xcalc"               ,
     "feh"           , "Gradient editor", "About KDE" , "Paste Special", "Background color"    ,
-    "kcolorchooser" , "plasmoidviewer" , "Xephyr"    , "kruler"       , "plasmaengineexplorer",
+    "kcolorchooser" , "plasmoidviewer" , "Xephyr"    , "kruler"       , "plasmaengineexplorer", "assword"
 }
 
 -- Ignore the tiled layout for the matching clients
@@ -216,7 +216,7 @@ tyrannical.properties.floating = {
     "MPlayer"       , "pinentry"        , "ksnapshot"  , "pinentry"     , "gtksu"          ,
     "xine"          , "feh"             , "kmix"       , "kcalc"        , "xcalc"          ,
     "yakuake"       , "Select Color$"   , "kruler"     , "kcolorchooser", "Paste Special"  ,
-    "New Form"      , "Insert Picture"  , "kcharselect", "mythfrontend" , "plasmoidviewer"
+    "New Form"      , "Insert Picture"  , "kcharselect", "mythfrontend" , "plasmoidviewer", "assword"
 }
 
 -- Make the matching clients (by classes) on top of the default layout
@@ -226,7 +226,7 @@ tyrannical.properties.ontop = {
 
 -- Force the matching clients (by classes) to be centered on the screen on init
 tyrannical.properties.centered = {
-    "kcalc"
+    "kcalc", "assword"
 }
 
 tyrannical.properties.size_hints_honor = { xterm = false, URxvt = false, aterm = false, sauer_client = false, mythfrontend  = false}
@@ -501,6 +501,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     --awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     awful.key({ modkey, "Shift"   }, "z", kbdcfg.switch),
+    awful.key({ modkey, "Shift"   }, "l", function () awful.util.spawn("i3lock -c 332244 -d -I 300") end),
+    awful.key({ modkey, "Shift"   }, "p", function () awful.util.spawn("assword gui") end),
     awful.key({                   }, "XF86Launch9", function () awful.util.spawn("sudo systemctl suspend") end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
