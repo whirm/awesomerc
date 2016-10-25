@@ -208,7 +208,8 @@ tyrannical.tags = {
 tyrannical.properties.intrusive = {
     "ksnapshot"     , "pinentry"       , "gtksu"     , "kcalc"        , "xcalc"               ,
     "feh"           , "Gradient editor", "About KDE" , "Paste Special", "Background color"    ,
-    "kcolorchooser" , "plasmoidviewer" , "Xephyr"    , "kruler"       , "plasmaengineexplorer", "assword"
+    "kcolorchooser" , "plasmoidviewer" , "Xephyr"    , "kruler"       , "plasmaengineexplorer",
+    "assword", "gcr-prompter",
 }
 
 -- Ignore the tiled layout for the matching clients
@@ -221,18 +222,18 @@ tyrannical.properties.floating = {
 
 -- Make the matching clients (by classes) on top of the default layout
 tyrannical.properties.ontop = {
-    "Xephyr"        , "ksnapshot"       , "kruler", "Gkrellm"
+    "Xephyr"        , "ksnapshot"       , "kruler", "Gkrellm", "assword", "gcr-prompter",
 }
 
 -- Force the matching clients (by classes) to be centered on the screen on init
 tyrannical.properties.centered = {
-    "kcalc", "assword"
+    "kcalc", "assword", "gcr-prompter",
 }
 
-tyrannical.properties.size_hints_honor = { xterm = false, URxvt = false, aterm = false, sauer_client = false, mythfrontend  = false}
+tyrannical.properties.size_hints_honor = { xterm = false, URxvt = false, aterm = false, sauer_client = false, mythfrontend  = false, Steam = true, assword=true}
 --tyrannical.properties.fullscreen = { Emacs = false, Emacs24 = false }
 tyrannical.properties.focusable = { Gkrellm = false } -- Doesn't seem to work for gkrellm
-tyrannical.properties.border_width = { Gkrellm = 0, Emacs = 0, Emacs24 = 0, iceweasel = 0, KRuler = 0 }
+tyrannical.properties.border_width = { Gkrellm = 0, Emacs = 0, Emacs24 = 0, iceweasel = 0, KRuler = 0, assword=0 }
 tyrannical.properties.default_layout = awful.layout.suit.tile
 tyrannical.settings.mwfact = 0.66
 
