@@ -352,6 +352,22 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
 
     if s == 1 then
+       -- batt
+      batmon = awful.widget.progressbar()
+      batmon:set_width(8)
+      batmon:set_vertical(true)
+      batmon:set_border_color("#3f3f3f")
+      batmon:set_color("#5f5f5f")
+      batmon_t = awful.tooltip({ objects = { batmon.widget },})
+      vicious.register(batmon, vicious.widgets.bat, function (widget, args)
+                         batmon_t:set_text(" State: " .. args[1] .. " | Charge: " .. args[2] .. "% | Remaining: " .. args[3])
+                         if args[2] <= 5 then
+                           naughty.notify({ text="Battery is low! " .. args[2] .. " percent remaining." })
+                         end
+                         return args[2]
+                                                    end , 60, "BAT0")
+      left_layout:add(batmon)
+
        -- CPUWIDGET
        vicious.cache(vicious.widgets.cpu)
        -- Initialize widget
