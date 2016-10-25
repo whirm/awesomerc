@@ -520,7 +520,20 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "z", kbdcfg.switch),
     awful.key({ modkey, "Shift"   }, "l", function () awful.util.spawn("i3lock -c 332244 -d -I 300") end),
     awful.key({ modkey, "Shift"   }, "p", function () awful.util.spawn("assword gui") end),
+
+    -- That's F18 on an apple alu keyboard
     awful.key({                   }, "XF86Launch9", function () awful.util.spawn("sudo systemctl suspend") end),
+    awful.key({                   }, "XF86Search", function () awful.util.spawn("sudo systemctl suspend") end),
+
+    -- Laptop backlight control
+    awful.key({                   }, "XF86MonBrightnessUp",   function () awful.util.spawn("light -A 10") end),
+    awful.key({         "Shift"   }, "XF86MonBrightnessUp",   function () awful.util.spawn("light -S 100") end),
+    awful.key({                   }, "XF86MonBrightnessDown", function () awful.util.spawn("light -U 10") end),
+    awful.key({         "Shift"   }, "XF86MonBrightnessDown", function () awful.util.spawn("light -S 1") end),
+
+    awful.key({                   }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer -D pulse sset Master 5%+") end),
+    awful.key({                   }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer -D pulse sset Master 5%-") end),
+    awful.key({                   }, "XF86AudioMute",         function () awful.util.spawn("amixer -D pulse set Master 1+ toggle") end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
