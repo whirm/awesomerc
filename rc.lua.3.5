@@ -1,0 +1,83 @@
+function nextEmptyTag()
+   --gears.debug.dump(client.focus, "")
+   if client.focus then s = client.focus.screen else s = mouse.screen end
+   current_tag = awful.tag.getidx(awful.tag.selected(s))
+   looped_tag = nil
+   tags = awful.tag.gettags(s)
+   for i=1,#tags,1 do
+      if i > current_tag then
+         if #tags[i]:clients() > 0 then
+            awful.tag.viewonly(tags[i])
+            return
+         end
+      else
+         if i < current_tag then
+            if #tags[i]:clients() > 0 and not looped_tag then
+               looped_tag = tags[i]
+            end
+         end
+      end
+   end
+   if looped_tag then awful.tag.viewonly(looped_tag) end
+end
+
+function prevEmptyTag()
+   if client.focus then s = client.focus.screen else s = mouse.screen end
+   current_tag = awful.tag.getidx(awful.tag.selected(s))
+   looped_tag = nil
+   tags = awful.tag.gettags(s)
+   for i=#tags,1,-1 do
+      if i < current_tag then
+         if #tags[i]:clients() > 0 then
+            awful.tag.viewonly(tags[i])
+            return
+         end
+      else
+         if i > current_tag then
+            if #tags[i]:clients() > 0 and not looped_tag then
+               looped_tag = tags[i]
+            end
+         end
+      end
+   end
+   if looped_tag then awful.tag.viewonly(looped_tag) end
+end
+
+-- {{{ Key bindings
+globalkeys = awful.util.table.join(
+  -- awful.key({ alt, "Control"    }, "Left", prevEmptyTag),
+  -- awful.key({ alt, "Control"    }, "Right", nextEmptyTag),
+  -- awful.key({ modkey,           }, "Up", awful.tag.viewprev),
+  -- awful.key({ modkey,           }, "Down",  awful.tag.viewnext       ),
+
+
+-- function reorder_tags()
+--    for scr =1, screen.count() do
+--       local tmp_tags = awful.tag.gettags(scr)
+--       for index, tag in ipairs(tmp_tags) do
+--          gears.debug.dump(tag.name, "TAG   ")
+--          local ttag = tyrannical.tags_by_name[tag.name]
+--          if ttag and ttag.index then
+--             if ttag.instances then
+--                if awful.tag.gettags(scr)[ttag.index] == ttag.index then
+--                   print(ttag.name, " Already in the good position ", ttag.index)
+--                else
+--                   print(ttag.name, "  in bad position ", ttag.index)
+--                   print("Moving!", ttag.index, ttag.instances[scr])
+--                   if ttag.index > #tmp_tags then
+--                      local pos = #tmp_tags
+--                   else
+--                      local pos = ttag.index
+--                   end
+--                   awful.tag.move(pos, tag)
+--                   print(ttag.name, "  in bad position ", ttag.index)
+--                end
+--             end
+--          else
+--             awful.tag.move(#tmp_tags, tag)
+--          end
+--       end
+--    end
+-- end
+
+-- reorder_tags()
