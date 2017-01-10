@@ -353,7 +353,7 @@ tyrannical.properties.centered = {
 tyrannical.properties.size_hints_honor = { xterm = false, URxvt = false, aterm = false, sauer_client = false, mythfrontend  = false, Steam = true, assword=true}
 --tyrannical.properties.fullscreen = { Emacs = false, Emacs24 = false }
 tyrannical.properties.focusable = { Gkrellm = false } -- Doesn't seem to work for gkrellm
-tyrannical.properties.border_width = { Gkrellm = 0, Emacs = 0, Emacs24 = 0, iceweasel = 0, KRuler = 0, assword=0 }
+tyrannical.properties.border_width = { Gkrellm = 0, Emacs = 0, Emacs24 = 0, spacemacs = 0, iceweasel = 0, KRuler = 0, assword=0 }
 tyrannical.properties.default_layout = awful.layout.suit.tile
 tyrannical.settings.mwfact = 0.66
 
