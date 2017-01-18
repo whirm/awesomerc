@@ -358,6 +358,7 @@ tyrannical.properties.default_layout = awful.layout.suit.tile
 tyrannical.settings.mwfact = 0.66
 
 -- Keyboard map indicator and changer
+-- TODO: use the official keyboard layout widget
 kbdcfg = {}
 kbdcfg.cmd = "setxkbmap"
 kbdcfg.layout = { { "us", "" , "US" }, { "es", "" , "ES" } }
@@ -376,93 +377,95 @@ kbdcfg.widget:buttons(
   awful.util.table.join(awful.button({ }, 1, function () kbdcfg.switch() end))
 )
 
+
+-- Unique widgets
+
+-- batt
+vicious.cache(vicious.widgets.bat)
+ac_widget = wibox.widget {
+  align = "center",
+  text = "X",
+  widget = wibox.widget.textbox,
+}
+vicious.register(ac_widget, vicious.widgets.bat, "$1", 2, "BAT0")
+
+batmon = wibox.container {
+  ac_widget,
+  color        = beautiful.fg_batt_low,
+  border_color = beautiful.fg_batt_crit,
+  border_width = 0,
+  background_color = beautiful.border_marked,
+  max_value = 1,
+  thickness = 2,
+  widget = wibox.container.arcchart
+}
+batmon.t = awful.tooltip({ objects = { batmon.widget },})
+vicious.register(batmon, vicious.widgets.bat, function (widget, args)
+                   batmon.t:set_text(" State: " .. args[1] .. " | Charge: " .. args[2] .. "% | Remaining: " .. args[3])
+                   if args[2] <= 5 then
+                     naughty.notify({ text="Battery is low! " .. args[2] .. " percent remaining." })
+                   end
+                   return args[2]
+                                              end , 60, "BAT0")
+
+-- CPU cores
+vicious.cache(vicious.widgets.cpu)
+cores = wibox.widget {
+  forced_width = 20,
+  layout  = wibox.layout.flex.horizontal,
+}
+for scr=1,4 do
+  local w = wibox.widget {
+    max_value     = 1,
+    color         = beautiful.cpu_st,
+    background_color = beautiful.bg_systray,
+    widget        = wibox.widget.progressbar,
+  }
+  local we = wibox.container {
+    w,
+    direction = 'east',
+    widget    = wibox.container.rotate
+  }
+  vicious.register(w, vicious.widgets.cpu, "$"..(scr+1).."",1)
+  cores:add(we)
+end
+
+-- CPU usage
+cpuwidget = wibox.widget {
+  color = "#BBAABB",
+  max_value = 1,
+  step_width = 3,
+  step_spacing = 1,
+  widget = wibox.widget.graph
+}
+vicious.register(cpuwidget, vicious.widgets.cpu, "$1", 1)
+
+-- MEM usage
+memwidget = wibox.widget {
+  color = "#AABBAA",
+  max_value = 1,
+  step_width = 3,
+  step_spacing = 1,
+  widget = wibox.widget.graph
+}
+vicious.cache(vicious.widgets.mem)
+vicious.register(memwidget, vicious.widgets.mem, '$1', 1)
+
+-- Disk IO
+diskwidget = wibox.container {
+  max_value = 6,
+  thickness = 1,
+  widget = wibox.container.arcchart
+}
+vicious.cache(vicious.widgets.dio)
+vicious.register(diskwidget, vicious.widgets.dio, "${sda iotime_s}", 1)
+
+
 -- @DOC_FOR_EACH_SCREEN@
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
 
-    if s.index == 1 then
-
-      -- batt
-      vicious.cache(vicious.widgets.bat)
-      ac_widget = wibox.widget {
-        align = "center",
-        text = "X",
-        widget = wibox.widget.textbox,
-      }
-      vicious.register(ac_widget, vicious.widgets.bat, "$1", 2, "BAT0")
-
-      s.batmon = wibox.container {
-        ac_widget,
-        color        = beautiful.fg_batt_low,
-        border_color = beautiful.fg_batt_crit,
-        border_width = 0,
-        background_color = beautiful.border_marked,
-        max_value = 1,
-        thickness = 2,
-        widget = wibox.container.arcchart
-      }
-      s.batmon_t = awful.tooltip({ objects = { s.batmon.widget },})
-      vicious.register(s.batmon, vicious.widgets.bat, function (widget, args)
-                         s.batmon_t:set_text(" State: " .. args[1] .. " | Charge: " .. args[2] .. "% | Remaining: " .. args[3])
-                         if args[2] <= 5 then
-                           naughty.notify({ text="Battery is low! " .. args[2] .. " percent remaining." })
-                         end
-                         return args[2]
-                                                    end , 60, "BAT0")
-
-     -- CPU cores
-      vicious.cache(vicious.widgets.cpu)
-      cores = wibox.widget {
-        forced_width = 20,
-        layout  = wibox.layout.flex.horizontal,
-      }
-      for scr=1,4 do
-        local w = wibox.widget {
-          max_value     = 1,
-          color         = beautiful.cpu_st,
-          background_color = beautiful.bg_systray,
-          widget        = wibox.widget.progressbar,
-        }
-        local we = wibox.container {
-          w,
-          direction = 'east',
-          widget    = wibox.container.rotate
-        }
-        vicious.register(w, vicious.widgets.cpu, "$"..(scr+1).."",1)
-        cores:add(we)
-      end
-
-      -- CPU usage
-      cpuwidget = wibox.widget {
-        color = "#BBAABB",
-        max_value = 1,
-        step_width = 3,
-        step_spacing = 1,
-        widget = wibox.widget.graph
-      }
-      vicious.register(cpuwidget, vicious.widgets.cpu, "$1", 1)
-
-      -- MEM usage
-      memwidget = wibox.widget {
-        color = "#AABBAA",
-        max_value = 1,
-        step_width = 3,
-        step_spacing = 1,
-        widget = wibox.widget.graph
-      }
-      vicious.cache(vicious.widgets.mem)
-      vicious.register(memwidget, vicious.widgets.mem, '$1', 1)
-
-      -- Disk IO
-      diskwidget = wibox.container {
-        max_value = 6,
-        thickness = 1,
-        widget = wibox.container.arcchart
-      }
-      vicious.cache(vicious.widgets.dio)
-      vicious.register(diskwidget, vicious.widgets.dio, "${sda total_mb}", 1)
-    end
     -- Each screen has its own tag table. (nope, we use tyrannical)
     -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
@@ -486,29 +489,34 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "bottom", screen = s })
 
+    left_layout = wibox.widget { -- Left widgets
+      layout = wibox.layout.fixed.horizontal,
+      mylauncher,
+      s.mytaglist,
+      s.mypromptbox,
+    }
+
+    if s.index == 1 then
+      left_layout:add(batmon,
+                      cores,
+                      cpuwidget,
+                      diskwidget,
+                      memwidget)
+    end
+
     -- @DOC_SETUP_WIDGETS@
     -- Add widgets to the wibox
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
-        { -- Left widgets
-            layout = wibox.layout.fixed.horizontal,
-            mylauncher,
-            s.batmon,
-            s.mytaglist,
-            cores,
-            cpuwidget,
-            diskwidget,
-            memwidget,
-            s.mypromptbox,
-        },
+        left_layout,
         s.mytasklist, -- Middle widget
         { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
-            kbdcfg.widget,
-            wibox.widget.systray(),
-            mytextclock,
-            s.mylayoutbox,
+          layout = wibox.layout.fixed.horizontal,
+          mykeyboardlayout,
+          kbdcfg.widget,
+          wibox.widget.systray(),
+          mytextclock,
+          s.mylayoutbox,
         },
     }
 end)
