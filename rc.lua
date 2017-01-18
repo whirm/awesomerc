@@ -584,7 +584,7 @@ globalkeys = awful.util.table.join(
               {description = "reload awesome", group = "awesome"}),
 
     -- Other handy commands
-    awful.key({ modkey, "Shift"   }, "l", function () awful.util.spawn("i3lock -c 332244 -d -I 300") end),
+    awful.key({ modkey, "Shift"   }, "l", function () awful.util.spawn("i3lock -c 000000 -d -I 300") end),
     awful.key({ modkey, "Shift"   }, "p", function () awful.util.spawn("assword gui") end),
 
     -- That's F18 on an apple alu keyboard
