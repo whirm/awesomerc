@@ -300,9 +300,10 @@ tyrannical.tags = {
     key           ="w",
     index         = 11,
     init          = true,
+    selected      = screen.count() > 1,
     exclusive     = true,
     --icon        = "~net.png",                 -- Use this icon for the tag (uncomment with a real path)
-    screen        = screen.count()>1 and 2 or 1,-- Setup on screen 2 if there is more than 1 screen, else on screen 1
+    screen        = screen.count() > 1 and 2 or 1,-- Setup on screen 2 if there is more than 1 screen, else on screen 1
     layout        = awful.layout.suit.max,      -- Use the max layout
     class         = {
       "Opera"         , "Firefox"        , "Rekonq"    , "Dillo"    , "Arora",
@@ -809,9 +810,9 @@ awful.rules.rules = {
       }, properties = { titlebars_enabled = false }
     },
 
-    -- Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
+    -- Set Firefox to always map on the tag named "Internet" on the last screen.
+    { rule = { class = "Firefox" },
+      properties = { screen = screen.count(), tag = "Internet" } },
 }
 -- }}}
 
