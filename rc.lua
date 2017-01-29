@@ -454,12 +454,13 @@ vicious.register(memwidget, vicious.widgets.mem, '$1', 1)
 
 -- Disk IO
 diskwidget = wibox.container {
-  max_value = 6,
+  max_value = 10.0,
+  min_value = 0.0,
   thickness = 1,
   widget = wibox.container.arcchart
 }
 vicious.cache(vicious.widgets.dio)
-vicious.register(diskwidget, vicious.widgets.dio, "${sda iotime_s}", 1)
+vicious.register(diskwidget, vicious.widgets.dio, "${sda iotime_ms}", 1)
 
 
 -- @DOC_FOR_EACH_SCREEN@
