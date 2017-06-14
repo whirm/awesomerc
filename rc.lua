@@ -303,7 +303,7 @@ tyrannical.tags = {
     selected      = screen.count() > 1,
     exclusive     = true,
     --icon        = "~net.png",                 -- Use this icon for the tag (uncomment with a real path)
-    screen        = screen.count() > 1 and 2 or 1,-- Setup on screen 2 if there is more than 1 screen, else on screen 1
+    screen        = screen.count(),             -- Setup on last screeen
     layout        = awful.layout.suit.max,      -- Use the max layout
     class         = {
       "Opera"         , "Firefox"        , "Rekonq"    , "Dillo"    , "Arora",
@@ -774,7 +774,7 @@ awful.rules.rules = {
                      -- size_hints_honor = false,
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen
+                     placement = awful.placement.no_overlap+awful.placement.no_offscreen+awful.placement.centered
      }
     },
 
@@ -812,8 +812,6 @@ awful.rules.rules = {
     },
 
     -- Set Firefox to always map on the tag named "Internet" on the last screen.
-    { rule = { class = "Firefox" },
-      properties = { screen = screen.count(), tag = "Internet" } },
 }
 -- }}}
 
