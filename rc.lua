@@ -202,6 +202,7 @@ tyrannical.tags = {
     key           = "1",
     index         = 1,
     screen        = 1,
+    clone_on      = 2,
     layout        = awful.layout.suit.fair, -- Use the tile layout
     init          = true,
     selected      = true,
@@ -293,7 +294,7 @@ tyrannical.tags = {
     -- The tag can be used on both screen, but only one at once
     layout        = awful.layout.suit.max.fullscreen,
     class         = {
-      "Kate", "KDevelop", "Codeblocks", "Code::Blocks" , "DDD", "kate4", "Emacs"}
+      "Kate", "KDevelop", "Codeblocks", "Code::Blocks" , "DDD", "kate4", "Emacs", "jetbrains-idea-ce"}
   },
   {
     name          = "Internet",
@@ -307,13 +308,14 @@ tyrannical.tags = {
     layout        = awful.layout.suit.max,      -- Use the max layout
     class         = {
       "Opera"         , "Firefox"        , "Rekonq"    , "Dillo"    , "Arora",
-      "Chromium"      , "nightly"        , "minefield" , "Iceweasel", "weechat 0.4.1" }
+      "Chromium"      , "nightly"        , "minefield" , "Iceweasel", "weechat 0.4.1", "Navigator" }
   },
   {
     name          = "Doc",
     key           = "e",
     index         = 12,
-    screen        = screen.count(),
+    screen        = screen.count() > 1 and 2 or 1 ,
+    selected      = screen.count() > 2,
     init          = true, -- This tag wont be created at startup, but will be when one of the
     -- client in the "class" section will start. It will be created on
     -- the client startup screen
@@ -327,15 +329,15 @@ tyrannical.tags = {
 
 -- Ignore the tag "exclusive" property for the following clients (matched by classes)
 tyrannical.properties.intrusive = {
-  "ksnapshot"     , "pinentry"       , "gtksu"     , "kcalc"        , "xcalc"               ,
+  "ksnapshot"     , "pinentry-gnome3"       , "gtksu"     , "kcalc"        , "xcalc"               ,
   "feh"           , "Gradient editor", "About KDE" , "Paste Special", "Background color"    ,
   "kcolorchooser" , "plasmoidviewer" , "Xephyr"    , "kruler"       , "plasmaengineexplorer",
-  "assword",        "gcr-prompter",
+  "assword",        "gcr-prompter"   , "ssword"
 }
 
 -- Ignore the tiled layout for the matching clients
 tyrannical.properties.floating = {
-  "MPlayer"       , "pinentry"        , "ksnapshot"  , "pinentry"     , "gtksu"          ,
+  "MPlayer"       , "pinentry-gnome3"        , "ksnapshot"  , "pinentry"     , "gtksu"          ,
   "xine"          , "feh"             , "kmix"       , "kcalc"        , "xcalc"          ,
   "yakuake"       , "Select Color$"   , "kruler"     , "kcolorchooser", "Paste Special"  ,
   "New Form"      , "Insert Picture"  , "kcharselect", "mythfrontend" , "plasmoidviewer",  "assword"
@@ -348,10 +350,19 @@ tyrannical.properties.ontop = {
 
 -- Force the matching clients (by classes) to be centered on the screen on init
 tyrannical.properties.centered = {
-  "kcalc", "assword", "gcr-prompter",
+  "kcalc", "Assword", "assword", "gcr-prompter", "ssword", "pinentry-gnome3",
 }
 
-tyrannical.properties.size_hints_honor = { xterm = false, URxvt = false, aterm = false, sauer_client = false, mythfrontend  = false, Steam = true, assword=true}
+tyrannical.properties.centered = {
+  assword = true,
+  Assword = true,
+}
+
+tyrannical.properties.size_hints_honor = {
+  xterm = false, URxvt = false, aterm = false, sauer_client = false,
+  mythfrontend  = false, Steam = true, assword=true
+}
+
 --tyrannical.properties.fullscreen = { Emacs = false, Emacs24 = false }
 tyrannical.properties.focusable = { Gkrellm = false } -- Doesn't seem to work for gkrellm
 tyrannical.properties.border_width = { Gkrellm = 0, Emacs = 0, Emacs24 = 0, Emacs25 = 0, spacemacs = 0, iceweasel = 0, KRuler = 0, assword=0 }
@@ -506,6 +517,15 @@ awful.screen.connect_for_each_screen(function(s)
                       memwidget)
     end
 
+    mpdwidget = wibox.widget.textbox()
+    vicious.register(mpdwidget, vicious.widgets.mpd,
+                     function (widget, args)
+                       if   args["{state}"] == "Stop" then return ""
+                       else return '<span color="white">MPD:</span> '..
+                           args["{Artist}"]..' - '.. args["{Title}"]
+                       end
+    end)
+
     -- @DOC_SETUP_WIDGETS@
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -514,6 +534,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
           layout = wibox.layout.fixed.horizontal,
+          mpdwidget,
           mykeyboardlayout,
           kbdcfg.widget,
           wibox.widget.systray(),
@@ -587,7 +608,8 @@ globalkeys = awful.util.table.join(
 
     -- Other handy commands
     awful.key({ modkey, "Shift"   }, "l", function () awful.util.spawn("i3lock -c 000000 -d -I 300") end),
-    awful.key({ modkey, "Shift"   }, "p", function () awful.util.spawn("assword gui") end),
+    awful.key({ modkey, "Shift"   }, "p", function () awful.util.spawn("ssgui") end),
+    -- awful.key({ modkey, "Shift"   }, "p", function () awful.util.spawn("assword gui") end),
 
     -- That's F18 on an apple alu keyboard
     awful.key({                   }, "XF86Launch9", function () awful.util.spawn("sudo systemctl suspend") end),
@@ -603,6 +625,8 @@ globalkeys = awful.util.table.join(
     awful.key({                   }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer sset Master 5%-") end),
     awful.key({                   }, "XF86AudioMute",         function () awful.util.spawn("amixer sset Master 1+ toggle") end),
 
+    -- Pop up MPD control app
+    awful.key({ modkey, "Control" }, "m", function () awful.util.spawn("cantata") end),
 
     -- awful.key({ modkey, "Shift"   }, "q", awesome.quit,
     --           {description = "quit awesome", group = "awesome"}),
@@ -792,18 +816,19 @@ awful.rules.rules = {
           "MessageWin",  -- kalarm.
           "Sxiv",
           "Wpa_gui",
-          "pinentry",
+          "pinentry-gnome3",
           "veromix",
           "xtightvncviewer"},
 
         name = {
+          "ssword",
           "Event Tester",  -- xev.
         },
         role = {
           "AlarmWindow",  -- Thunderbird's calendar.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
         }
-      }, properties = { floating = true }},
+      }, properties = { floating = true, centered = true }},
 
     -- @DOC_DIALOG_RULE@
     -- Add titlebars to normal clients and dialogs
