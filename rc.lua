@@ -607,26 +607,26 @@ globalkeys = awful.util.table.join(
               {description = "reload awesome", group = "awesome"}),
 
     -- Other handy commands
-    awful.key({ modkey, "Shift"   }, "l", function () awful.util.spawn("i3lock -c 000000 -d -I 300") end),
-    awful.key({ modkey, "Shift"   }, "p", function () awful.util.spawn("ssgui") end),
-    -- awful.key({ modkey, "Shift"   }, "p", function () awful.util.spawn("assword gui") end),
+    awful.key({ modkey, "Shift"   }, "l", function () awful.spawn("i3lock -c 000000 -d -I 300") end),
+    awful.key({ modkey, "Shift"   }, "p", function () awful.spawn("ssgui") end),
+    -- awful.key({ modkey, "Shift"   }, "p", function () awful.spawn("assword gui") end),
 
     -- That's F18 on an apple alu keyboard
-    awful.key({                   }, "XF86Launch9", function () awful.util.spawn("sudo systemctl suspend") end),
-    awful.key({                   }, "XF86Search", function () awful.util.spawn("sudo systemctl suspend") end),
+    awful.key({                   }, "XF86Launch9", function () awful.spawn("sudo systemctl suspend") end),
+    awful.key({                   }, "XF86Search", function () awful.spawn("sudo systemctl suspend") end),
 
     -- Laptop backlight control
-    awful.key({                   }, "XF86MonBrightnessUp",   function () awful.util.spawn("light -A 10") end),
-    awful.key({         "Shift"   }, "XF86MonBrightnessUp",   function () awful.util.spawn("light -S 100") end),
-    awful.key({                   }, "XF86MonBrightnessDown", function () awful.util.spawn("light -U 10") end),
-    awful.key({         "Shift"   }, "XF86MonBrightnessDown", function () awful.util.spawn("light -S 1") end),
+    awful.key({                   }, "XF86MonBrightnessUp",   function () awful.spawn("light -A 10") end),
+    awful.key({         "Shift"   }, "XF86MonBrightnessUp",   function () awful.spawn("light -S 100") end),
+    awful.key({                   }, "XF86MonBrightnessDown", function () awful.spawn("light -U 10") end),
+    awful.key({         "Shift"   }, "XF86MonBrightnessDown", function () awful.spawn("light -S 1") end),
 
-    awful.key({                   }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer sset Master 5%+") end),
-    awful.key({                   }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer sset Master 5%-") end),
-    awful.key({                   }, "XF86AudioMute",         function () awful.util.spawn("amixer sset Master 1+ toggle") end),
+    awful.key({                   }, "XF86AudioRaiseVolume",  function () awful.spawn("amixer sset Master 5%+") end),
+    awful.key({                   }, "XF86AudioLowerVolume",  function () awful.spawn("amixer sset Master 5%-") end),
+    awful.key({                   }, "XF86AudioMute",         function () awful.spawn("amixer sset Master 1+ toggle") end),
 
     -- Pop up MPD control app
-    awful.key({ modkey, "Control" }, "m", function () awful.util.spawn("cantata") end),
+    awful.key({ modkey, "Control" }, "m", function () awful.spawn("cantata") end),
 
     -- awful.key({ modkey, "Shift"   }, "q", awesome.quit,
     --           {description = "quit awesome", group = "awesome"}),
