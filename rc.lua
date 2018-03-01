@@ -625,6 +625,11 @@ globalkeys = awful.util.table.join(
     awful.key({                   }, "XF86AudioLowerVolume",  function () awful.spawn("amixer sset Master 5%-") end),
     awful.key({                   }, "XF86AudioMute",         function () awful.spawn("amixer sset Master 1+ toggle") end),
 
+    -- Media keys
+    awful.key({                   }, "XF86AudioPrev",         function () awful.spawn("mpc prev") end),
+    awful.key({                   }, "XF86AudioNext",         function () awful.spawn("mpc next") end),
+    awful.key({                   }, "XF86AudioPlay",         function () awful.spawn("mpc toggle") end),
+
     -- Pop up MPD control app
     awful.key({ modkey, "Control" }, "m", function () awful.spawn("cantata") end),
 
