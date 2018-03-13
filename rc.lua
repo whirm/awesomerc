@@ -307,7 +307,7 @@ tyrannical.tags = {
     screen        = screen.count(),             -- Setup on last screeen
     layout        = awful.layout.suit.max,      -- Use the max layout
     class         = {
-      "Opera"         , "Firefox"        , "Rekonq"    , "Dillo"    , "Arora",
+      "Opera"         , "Firefox"        , "Rekonq"    , "Dillo"    , "Arora", "qutebrowser",
       "Chromium"      , "nightly"        , "minefield" , "Iceweasel", "weechat 0.4.1", "Navigator" }
   },
   {
