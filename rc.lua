@@ -426,7 +426,7 @@ cores = wibox.widget {
   forced_width = 20,
   layout  = wibox.layout.flex.horizontal,
 }
-for scr=1,4 do
+for scr=1,8 do
   local w = wibox.widget {
     max_value     = 1,
     color         = beautiful.cpu_st,
