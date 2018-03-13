@@ -837,11 +837,13 @@ awful.rules.rules = {
 
     -- @DOC_DIALOG_RULE@
     -- Add titlebars to normal clients and dialogs
-    { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = false }
-    },
+    -- { rule_any = {type = { "normal", "dialog" }
+    --   }, properties = { titlebars_enabled = false }
+    -- },
 
     -- Set Firefox to always map on the tag named "Internet" on the last screen.
+    -- { rule = { class = "FirefoxXXXXX" },
+    --   properties = { screen = screen.count(), tag = "Internet" } },
 }
 -- }}}
 
